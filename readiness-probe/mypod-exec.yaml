@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: nginx
+  labels:
+    app: nginx
+    tier: front-end
+spec:
+  containers:
+    - name: nginx
+      image: nginx 
+      readinessProbe:
+        exec:
+          command:
+            - cat
+            - /api/is_ready
+

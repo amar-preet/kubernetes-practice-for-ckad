@@ -1,0 +1,13 @@
+kind: Job
+metadata:
+  name: throw-dice-job
+spec:
+  completions: 3
+  backoffLimit: 25
+  parallelism: 3
+  template:
+    spec:
+      containers:
+      - image: kodekloud/throw-dice
+        name: throw-dice
+      restartPolicy: Never

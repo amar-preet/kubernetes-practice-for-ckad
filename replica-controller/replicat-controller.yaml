@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicaController
+metadata: 
+  name: myapp-replicaset
+  labels:
+    app: myapp
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: nginx-2
+      labels:
+        app: myapp
+    spec:  
+      containers:
+        - name: nginx
+          image: nginx
+  
+      

@@ -1,0 +1,133 @@
+List of imperative commands
+
+Create an NGINX Pod
+kubectl run nginx --image=nginx
+
+Generate POD Manifest YAML file (-o yaml). Don't create it(--dry-run)
+kubectl run nginx --image=nginx  --dry-run=client -o yaml
+
+Save it to a file 
+kubectl run nginx --image=nginx  --dry-run=client -o yaml > nginx-pod.yaml
+
+Create a Service named redis-service of type ClusterIP to expose pod redis on port 6379
+kubectl expose pod redis --port=6379 --name redis-service
+
+kubectl run httpd --image=httpd:alpine --port=80 --expose
+
+Start a custom-nginx pod and let the container expose port 8080
+kubectl run custom-nginx --image=nginx --port=8080
+
+Create Pod and Service in one command
+kubectl run httpd --image=httpd:alpine --port=80 --expose
+
+Create a Service named nginx of type NodePort to expose pod nginx's port 80 on port 30080 on the nodes:
+kubectl expose pod nginx --port=80 --name nginx-service --type=NodePort --dry-run=client -o yaml
+
+To limit resources in a namespace - use ResourceQuotas
+
+Create ConfigMap
+kubectl create configmap app-config --from-literal=APP_COLOR=blue
+
+or from a file 
+kubectl create configmap app-config --from-file=app_config.properties
+
+Explain any command 
+ kubectl explain po --recursive | grep envFrom -A3  
+
+Check which user running the command on container
+kubectl exec ubuntu-sleeper -- whoami 
+
+kubectl label node node01 color=blue
+
+Create Deployment
+kubectl create deployment blue --image=nginx
+
+Scale Deployment
+kubectl scale deployment blue --replicas=6
+
+Get Everything in a label
+kubectl get all -o wide --selector env=prod
+
+Get pod by label name
+kubectl get pods -l name=payroll
+
+kubectl get pods --show-labels
+
+View logs on pod
+kubectl exec webapp -- cat /log/app.log
+
+View logs on pod in a namespace
+kubectl exec  -n elastic-stack app  -- cat /log/app.log
+
+Add a label to an existing node
+kubectl label node node01 color=blue
+
+View change cause of a deployment
+kubectl create -f deploy-def.yaml --record
+
+Rollout history
+kubectl rollout history deploy my-deploy-new
+
+Undo rollout
+kubectl rollout undo deploy my-deploy-new
+
+Create a pod nginx and expose it to port 80
+kubectl run nginx --image=nginx --restart=Never --port=80
+
+Shell into running pod nginx(one conatiner)
+k exec -it nginx -- /bin/bash
+or 
+k exec -it nginx -- sh
+
+Check the connection of the nginx pod from the busybox pod
+kubectl exec -it busybox -- wget -o- <IP Address>
+
+Create a busybox pod and echo message ‘How are you’ and have it deleted immediately
+kubectl run busybox --image=nginx --restart=Never -it --rm -- echo "How are you"
+
+k run niginx --image=nginx --restart=Never -n default --dry-run=client -o yaml -- /bin/sh -c "sleep 3600" > pp.yml
+
+Create a busybox pod (using YAML) that runs the command "env".
+k run busybox --image=busybox --restart=Never  -n mynamespace --dry-run=client -o yaml --command -- "env" 
+
+Check the history of the specific revision of that deployment
+kubectl rollout history deploy webapp --revision=7
+
+Create the temporary busybox pod and hit the service. 
+Verify the service that it should return the nginx page index.html.
+kubectl run busybox --image=busybox --restart=Never -it --rm -- wget -o- <Cluster IP>:80
+Note-
+-it helps seeing output
+--rm self deletes the pod 
+
+get pod in all namespaces 
+kubectl get po -A
+
+follow logs for busybox pod 
+kubectl logs busybox -f
+
+If pod crashed and restarted, get logs about the previous instance
+kubectl logs nginx -p
+
+Create service account 
+kubectl run nginx --image=nginx --restart=Never --serviceaccount=myuser -o yaml --dry-run=client > pod.yaml
+
+Rolling update "www" containers of "frontend" deployment, updating the image
+kubectl set image deployment/frontend www=image:v2 
+
+Label an existing pod nginx-1
+k label po nginx-1 env=dev
+
+update label from an existing pod nginx-1
+k label po nginx-1 env=dev-new
+
+Remove label from an existing pod nginx-1
+k label po nginx-1 env-
+
+
+Command Alias
+alias ksc='kubectl config set-context --current --namespace'
+alias kgc='kubectl describe po | grep -i namespace -m 1'
+alias kd='kubectl describe'
+alias kc='kubectl create -f'
+export dr="--dry-run=client -o yaml"

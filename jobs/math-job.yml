@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  name: math-job
+spec:
+  completions: 4
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      containers:
+      - image: ubuntu
+        name: math-job
+        resources: {}
+        command: ['expr', '3', '+', '6']
+      restartPolicy: Never
+status: {}

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: myapp-replicaset
+  labels:
+    app: myapp
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 3
+  template:
+    metadata:
+      name: nginx-2
+      labels:
+        app: myapp
+    spec:  
+      containers:
+        - name: nginx
+          image: nginx
+  
+      
+# scaling replicas 
+# 1. kubectl replace -f replicaset.yaml 
+# 2. kubectl scale --replicas=6 replicaset myapp-replicaset  
